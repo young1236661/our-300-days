@@ -1,7 +1,7 @@
 let detector;
 self.onmessage=async ({data})=>{
   if(data.type==='init'){
-    try{const runtime=await import('./runtime.mjs');detector=await runtime.createDetector();self.postMessage({type:'ready'});}
+    try{const runtime=await import('./runtime.mjs?startup=2');detector=await runtime.createDetector({onDownloaded:()=>self.postMessage({type:'downloaded'})});self.postMessage({type:'ready'});}
     catch(e){self.postMessage({type:'error',message:String(e?.message||e)});}
   }else if(data.type==='frame'){
     try{const result=detector.detectForVideo(data.bitmap,data.time);
