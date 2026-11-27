@@ -27,11 +27,13 @@ async function loadEngine(url, signal) {
   return original.blob();
 }
 
-async function loadRuntime(signal) {
-  const {FilesetResolver, HandLandmarker} = await import('./vendor/vision_bundle.mjs');
-  const files = await FilesetResolver.forVisionTasks(new URL('vendor/wasm', root).href);
-  const engine = await loadEngine(files.wasmBinaryPath, signal);
-  return {files, engine, HandLandmarker};
+// Same SIMD instructions used by FilesetResolver in the pinned MediaPipe 0.10.32.
+// Check them locally so a slow JS response cannot delay the engine download.
+const simdProbe = Uint8Array.of(0,97,115,109,1,0,0,0,1,5,1,96,0,1,123,3,2,1,0,10,10,1,8,0,65,0,253,15,253,98,11);
+function engineFiles() {
+  const name = WebAssembly.validate(simdProbe) ? 'vision_wasm_internal' : 'vision_wasm_nosimd_internal';
+  const base = new URL('vendor/wasm/' + name, root).href;
+  return {wasmLoaderPath: base + '.js', wasmBinaryPath: base + '.wasm'};
 }
 
 export async function createDetector({signal, onDownloaded} = {}) {
@@ -41,9 +43,11 @@ export async function createDetector({signal, onDownloaded} = {}) {
   signal?.addEventListener('abort', abort, {once: true});
   let engineUrl;
   try {
-    const [model, {files, engine, HandLandmarker}] = await Promise.all([
+    const files = engineFiles();
+    const [model, engine, {HandLandmarker}] = await Promise.all([
       getFile(new URL('hand_landmarker.task', root), transfer.signal).then(response => response.arrayBuffer()),
-      loadRuntime(transfer.signal)
+      loadEngine(files.wasmBinaryPath, transfer.signal),
+      import('./vendor/vision_bundle.mjs')
     ]);
     onDownloaded?.();
     engineUrl = URL.createObjectURL(engine);
