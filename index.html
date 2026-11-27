@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#08131e"><link rel="icon" href="data:,"><title>手势粒子圣诞树</title>  <script type="module" crossorigin src="./assets/index-gSXUN0nT.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-9ey2TvQl.css">
+</head>
+<body>
+<main id="night" aria-label="冬夜粒子空间">
+  <canvas id="stage" tabindex="0" aria-label="三维粒子空间。按一至五切换场景，按空格聚散，按 F 切换全屏。"></canvas>
+  <div id="cursor" hidden aria-hidden="true"></div>
+  <button id="exit-theater" class="quiet">退出沉浸视图</button>
+  <header class="bar">
+    <div class="bar-actions">
+      <button id="camera-control" class="quiet experience" hidden>开启摄像头</button>
+      <button id="guide-open" class="quiet experience" hidden>操作指南</button>
+      <button id="sound" class="sound-btn" aria-pressed="false" aria-label="星音"><i class="levels" aria-hidden="true"><b></b><b></b><b></b><b></b></i></button>
+    </div>
+  </header>
+  <section id="intro" aria-label="选择体验方式">
+    <p id="opening" class="personal-line" hidden></p>
+    <div class="entrances"><button id="start-camera" class="primary">开启摄像头</button><button id="start-pointer" class="secondary">免摄像头体验</button></div>
+  </section>
+  <section id="caption" class="caption" aria-live="polite" hidden></section>
+  <div id="preview" hidden><video id="camera" muted playsinline autoplay></video><canvas id="skeleton" hidden></canvas></div>
+  <button id="hide-preview" hidden class="quiet">收起预览</button>
+  <aside id="feedback" role="status" aria-live="polite" hidden></aside>
+  <section id="dock" class="experience" hidden aria-label="粒子世界">
+    <div id="context-actions">
+      <button id="memory-show" class="context-button" hidden>专属展示</button>
+      <button id="memory-exit" class="context-button" hidden>退出展示</button>
+      <button id="ceremony" class="context-button"><i class="spark" aria-hidden="true"></i> 点亮星树</button>
+      <button id="tide" class="context-button" hidden>汇聚海潮</button>
+      <button id="clear-drawing" class="context-button" hidden>重新绘制</button>
+      <button id="material-open" class="context-button" hidden>更换文字或照片</button>
+      <button id="layers" class="context-button" hidden>查看星层</button>
+    </div>
+    <nav id="worlds" aria-label="切换粒子世界">
+      <button data-world="tree" aria-pressed="true">星树</button><button data-world="bloom" aria-pressed="false">星河</button><button data-world="heart" aria-pressed="false">画心</button><button data-world="sea" aria-pressed="false">海与雪</button><button data-world="portrait" aria-pressed="false">星尘成字</button>
+    </nav>
+  </section>
+  <div id="loading" role="status">加载中…</div>
+</main>
+<dialog id="guide" aria-labelledby="guide-title"><div class="dialog-head"><h2 id="guide-title">操作指南</h2><button class="close" aria-label="关闭">×</button></div>
+  <p>让一只手完整入镜。摄像头画面只在本机用于识别。</p>
+  <dl><dt>张掌 / 握拳</dt><dd>张开手掌进入星河，握拳让星尘回到树上。</dd><dt>平移手掌</dt><dd>左右旋转树体，上下引导光流。移动越快，扰动越强。</dd><dt>捏住星星</dt><dd>拇指和食指在星顶相遇，移动后松开。向上举起并短暂停留可点亮星树。</dd><dt>食指 / V 字</dt><dd>单伸食指，沿双瓣、凹口和底尖画一圈闭合的心。比出 V 字后收手，可轮换世界。</dd></dl>
+  <p>鼠标或单指拖动可旋转，按住星星可拖走，滚轮或双指可缩放。在「画心」中按住画布绘制。</p>
+  <p class="keys">1–5 切换世界　空格 聚散　R 复位　F 全屏　Esc 退出交互</p>
+  <div class="dialog-actions"><button id="fullscreen" class="secondary">切换全屏</button><button id="preview-toggle" class="secondary" hidden>显示镜像预览</button><button id="debug-toggle" class="secondary" hidden>显示手部骨架</button><button id="voice" class="secondary" hidden>播放语音</button></div>
+</dialog>
+<dialog id="materials" aria-labelledby="materials-title"><div class="dialog-head"><h2 id="materials-title">星尘成像</h2><button class="close" aria-label="关闭">×</button></div>
+ <label for="text-value">文字</label><textarea id="text-value" maxlength="64" rows="2"></textarea>
+ <div class="dialog-actions"><button id="use-text" class="primary" disabled>凝成文字</button><button id="use-photo" class="secondary">选择本地照片</button><button id="use-saved-photo" class="secondary" hidden>收藏的照片</button><button id="use-landscape" class="secondary">月下山海</button><button id="use-handwriting" class="secondary" hidden>手写字</button></div>
+ <input id="photo-file" type="file" accept="image/*" hidden><p>照片和文字仅在当前浏览器内处理，离开页面后清除。</p>
+</dialog>
+<dialog id="strata" aria-labelledby="strata-title"><div class="dialog-head"><h2 id="strata-title">沉积星层</h2><button class="close" aria-label="关闭">×</button></div><ol id="layer-list"></ol></dialog>
+</body></html>
